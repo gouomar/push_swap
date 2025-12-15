@@ -1,59 +1,64 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gomar <gomar@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/13 00:00:00 by gomar             #+#    #+#             */
-/*   Updated: 2025/12/13 00:00:00 by gomar            ###   ########.fr       */
+/*   Created: 2025/12/14 00:00:00 by gomar             #+#    #+#             */
+/*   Updated: 2025/12/14 00:00:00 by gomar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	error_exit(t_stack *a, t_stack *b)
+int	is_valid_number(char *str)
 {
-	if (a)
-		stack_clear(&a);
-	if (b)
-		stack_clear(&b);
-	write(2, "Error\n", 6);
+	int	i;
+
+	i = 0;
+	if (!str || !str[0])
+		return (0);
+	if (str[i] == '-' || str[i] == '+')
+		i++;
+	if (!str[i])
+		return (0);
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
-static t_node	*get_min_node(t_stack *stack)
+int	has_duplicates(t_stack *stack, int value)
 {
 	t_node	*current;
-	t_node	*min;
 
 	if (!stack || !stack->top)
-		return (NULL);
+		return (0);
 	current = stack->top;
-	min = current;
 	while (current)
 	{
-		if (current->index == -1 && current->value < min->value)
-			min = current;
-		else if (min->index != -1 && current->index == -1)
-			min = current;
+		if (current->value == value)
+			return (1);
 		current = current->next;
 	}
-	return (min);
+	return (0);
 }
 
-void	assign_indices(t_stack *stack)
+void	free_split(char **split)
 {
-	int		index;
-	t_node	*min;
+	int	i;
 
-	if (!stack || !stack->top)
+	if (!split)
 		return ;
-	index = 0;
-	while (index < stack->size)
+	i = 0;
+	while (split[i])
 	{
-		min = get_min_node(stack);
-		if (min)
-			min->index = index;
-		index++;
+		free(split[i]);
+		i++;
 	}
+	free(split);
 }

@@ -12,67 +12,6 @@
 
 #include "push_swap.h"
 
-int	is_valid_number(char *str)
-{
-	int	i;
-
-	i = 0;
-	if (!str || !str[0])
-		return (0);
-	if (str[i] == '-' || str[i] == '+')
-		i++;
-	if (!str[i])
-		return (0);
-	while (str[i])
-	{
-		if (!ft_isdigit(str[i]))
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-int	has_duplicates(t_stack *stack, int value)
-{
-	t_node	*current;
-
-	if (!stack || !stack->top)
-		return (0);
-	current = stack->top;
-	while (current)
-	{
-		if (current->value == value)
-			return (1);
-		current = current->next;
-	}
-	return (0);
-}
-
-static long	ft_atol(const char *str)
-{
-	long	result;
-	int		sign;
-	int		i;
-
-	result = 0;
-	sign = 1;
-	i = 0;
-	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
-		i++;
-	if (str[i] == '-' || str[i] == '+')
-	{
-		if (str[i] == '-')
-			sign = -1;
-		i++;
-	}
-	while (str[i] >= '0' && str[i] <= '9')
-	{
-		result = result * 10 + (str[i] - '0');
-		i++;
-	}
-	return (result * sign);
-}
-
 static int	add_number_to_stack(t_stack *a, char *str)
 {
 	long	num;
@@ -80,8 +19,8 @@ static int	add_number_to_stack(t_stack *a, char *str)
 
 	if (!is_valid_number(str))
 		return (0);
-	num = ft_atol(str);
-	if (num > INT_MAX || num < INT_MIN)
+	num = ft_atoi(str);
+	if (num > 2147483647 || num < -2147483648)
 		return (0);
 	if (has_duplicates(a, (int)num))
 		return (0);
@@ -92,21 +31,34 @@ static int	add_number_to_stack(t_stack *a, char *str)
 	return (1);
 }
 
-int	parse_args(int argc, char **argv, t_stack *a)
+static int	process_arg(t_stack *a, char *arg)
 {
-	int		i;
+	char	**split;
+	int		j;
+
+	split = ft_split(arg, ' ');
+	if (!split)
+		return (0);
+	j = 0;
+	while (split[j])
+	{
+		if (!add_number_to_stack(a, split[j]))
+		{
+			free_split(split);
+			return (0);
+		}
+		j++;
+	}
+	free_split(split);
+	return (1);
+}
+
+static void	reverse_stack(t_stack *a)
+{
 	t_node	*temp_stack;
 	t_node	*next;
 	t_node	*prev;
 
-	temp_stack = NULL;
-	i = 1;
-	while (i < argc)
-	{
-		if (!add_number_to_stack(a, argv[i]))
-			return (0);
-		i++;
-	}
 	temp_stack = NULL;
 	while (a->top)
 	{
@@ -123,5 +75,19 @@ int	parse_args(int argc, char **argv, t_stack *a)
 		prev = temp_stack;
 		temp_stack = temp_stack->next;
 	}
+}
+
+int	parse_args(int argc, char **argv, t_stack *a)
+{
+	int	i;
+
+	i = 1;
+	while (i < argc)
+	{
+		if (!process_arg(a, argv[i]))
+			return (0);
+		i++;
+	}
+	reverse_stack(a);
 	return (1);
 }
