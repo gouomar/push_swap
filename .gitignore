@@ -1,0 +1,8 @@
+.vscode
+
+#tester
+push_swap_tester/
+
+#exucutable
+checker
+push_swap
