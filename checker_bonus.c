@@ -6,7 +6,7 @@
 /*   By: gomar <gomar@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 00:00:00 by gomar             #+#    #+#             */
-/*   Updated: 2025/12/16 13:40:23 by gomar            ###   ########.fr       */
+/*   Updated: 2025/12/20 15:09:22 by gomar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,7 @@ static char	*get_next_line_simple(int fd)
 		ret = read(fd, &buf, 1);
 	}
 	if (ret <= 0 && i == 0)
-	{
-		free(line);
-		return (NULL);
-	}
+		return (free(line), NULL);
 	line[i] = '\0';
 	return (line);
 }
@@ -105,20 +102,11 @@ int	main(int argc, char **argv)
 	a = stack_init();
 	b = stack_init();
 	if (!a || !b)
-	{
-		error_exit(a, b);
-		return (1);
-	}
+		return (error_exit(a, b), 1);
 	if (!parse_args(argc, argv, a))
-	{
-		error_exit(a, b);
-		return (1);
-	}
+		return (error_exit(a, b), 1);
 	if (!read_and_execute(a, b))
-	{
-		error_exit(a, b);
-		return (1);
-	}
+		return (error_exit(a, b), 1);
 	if (is_sorted(a) && b->size == 0)
 		ft_printf("OK\n");
 	else

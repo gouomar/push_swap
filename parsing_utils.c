@@ -6,11 +6,36 @@
 /*   By: gomar <gomar@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 00:00:00 by gomar             #+#    #+#             */
-/*   Updated: 2025/12/14 00:00:00 by gomar            ###   ########.fr       */
+/*   Updated: 2025/12/21 15:16:11 by gomar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+
+long	ft_atol(const char *str)
+{
+	int		sign;
+	long	result;
+	int		i;
+
+	sign = 1;
+	result = 0;
+	i = 0;
+	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
+		i++;
+	if (str[i] == '-' || str[i] == '+')
+	{
+		if (str[i] == '-')
+			sign = -1;
+		i++;
+	}
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		result = result * 10 + (str[i] - '0');
+		i++;
+	}
+	return (result * sign);
+}
 
 int	is_valid_number(char *str)
 {

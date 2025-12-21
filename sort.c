@@ -5,21 +5,67 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: gomar <gomar@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/13 00:00:00 by gomar             #+#    #+#             */
-/*   Updated: 2025/12/13 00:00:00 by gomar            ###   ########.fr       */
+/*   Created: 2025/12/19 10:26:21 by gomar             #+#    #+#             */
+/*   Updated: 2025/12/20 15:09:22 by gomar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-/*
-** Main sorting function dispatcher
-** - 1 element: already sorted
-** - 2 elements: simple swap if needed
-** - 3 elements: hardcoded optimal solution
-** - 4-5 elements: small stack optimization
-** - 6+ elements: main algorithm (TO BE IMPLEMENTED)
-*/
+static void	push_chunks_to_b(t_stack *a, t_stack *b)
+{
+	int	counter;
+	int	chunk_size;
+
+	counter = 0;
+	chunk_size = get_chunk_factor(a->size);
+	while (a->size > 0)
+	{
+		if (a->top->index <= counter)
+		{
+			pb(a, b, 1);
+			rb(b, 1);
+			counter++;
+		}
+		else if (a->top->index <= counter + chunk_size)
+		{
+			pb(a, b, 1);
+			counter++;
+		}
+		else
+			ra(a, 1);
+	}
+}
+
+static void	push_back_to_a(t_stack *a, t_stack *b)
+{
+	int	max_pos;
+	int	size;
+
+	while (b->size > 0)
+	{
+		max_pos = get_max_pos(b);
+		size = b->size;
+		if (max_pos <= size / 2)
+		{
+			while (max_pos-- > 0)
+				rb(b, 1);
+		}
+		else
+		{
+			while (max_pos++ < size)
+				rrb(b, 1);
+		}
+		pa(a, b, 1);
+	}
+}
+
+void	sort_large(t_stack *a, t_stack *b)
+{
+	push_chunks_to_b(a, b);
+	push_back_to_a(a, b);
+}
+
 void	sort_stack(t_stack *a, t_stack *b)
 {
 	int	size;
@@ -35,66 +81,4 @@ void	sort_stack(t_stack *a, t_stack *b)
 		sort_small(a, b);
 	else
 		sort_large(a, b);
-}
-
-/*
-** ============================================================================
-** MAIN SORTING ALGORITHM - TO BE IMPLEMENTED
-** ============================================================================
-**
-** This is where your main sorting algorithm goes!
-**
-** Popular approaches for push_swap:
-**
-** 1. RADIX SORT (using indices/binary representation)
-**    - Simple to implement
-**    - Consistent performance ~O(n * log(n)) operations
-**    - Works by sorting bit by bit
-**    - Typically achieves: ~100 nums in ~700 ops, ~500 nums in ~5500 ops
-**
-** 2. TURKISH ALGORITHM / COST-BASED SORTING
-**    - Calculate cost to move each element
-**    - Always pick the cheapest move
-**    - Can be very efficient but more complex
-**
-** 3. CHUNK-BASED SORTING
-**    - Divide elements into chunks
-**    - Push chunks to stack B
-**    - Rebuild in sorted order
-**
-** 4. MECHANICAL TURK / GREEDY ALGORITHM
-**    - For each element in A, find best position in B
-**    - Calculate rotation costs and optimize
-**
-** Tips:
-** - Use the index field (assigned in assign_indices) instead of values
-** - Indices are 0 to n-1, making algorithms easier
-** - For radix: check bit at position i to decide pb or ra
-**
-** ============================================================================
-*/
-void	sort_large(t_stack *a, t_stack *b)
-{
-	(void)a;
-	(void)b;
-	/*
-	** TODO: Implement your sorting algorithm here!
-	**
-	** Example radix sort pseudocode:
-	**
-	** int max_bits = calculate_max_bits(a->size);
-	** for (int bit = 0; bit < max_bits; bit++)
-	** {
-	**     int size = a->size;
-	**     for (int i = 0; i < size; i++)
-	**     {
-	**         if ((a->top->index >> bit) & 1)
-	**             ra(a, 1);
-	**         else
-	**             pb(a, b, 1);
-	**     }
-	**     while (b->size > 0)
-	**         pa(a, b, 1);
-	** }
-	*/
 }

@@ -1,39 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   sort_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gomar <gomar@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/13 00:00:00 by gomar             #+#    #+#             */
+/*   Created: 2025/12/20 00:00:00 by gomar             #+#    #+#             */
 /*   Updated: 2025/12/20 15:09:22 by gomar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-int	main(int argc, char **argv)
+int	get_chunk_factor(int size)
 {
-	t_stack	*a;
-	t_stack	*b;
+	if (size <= 100)
+		return (16);
+	return (34);
+}
 
-	if (argc < 2)
-		return (0);
-	a = stack_init();
-	b = stack_init();
-	if (!a || !b)
+int	get_max_pos(t_stack *b)
+{
+	t_node	*current;
+	int		max_idx;
+	int		max_pos;
+	int		pos;
+
+	current = b->top;
+	max_idx = -1;
+	max_pos = 0;
+	pos = 0;
+	while (current)
 	{
-		error_exit(a, b);
-		return (1);
+		if (current->index > max_idx)
+		{
+			max_idx = current->index;
+			max_pos = pos;
+		}
+		current = current->next;
+		pos++;
 	}
-	if (!parse_args(argc, argv, a))
-		error_exit(a, b);
-	if (!is_sorted(a))
-	{
-		assign_indices(a);
-		sort_stack(a, b);
-	}
-	stack_clear(&a);
-	stack_clear(&b);
-	return (0);
+	return (max_pos);
 }

@@ -6,7 +6,7 @@
 #    By: gomar <gomar@student.1337.ma>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/12/13 00:00:00 by gomar             #+#    #+#              #
-#    Updated: 2025/12/16 13:40:23 by gomar            ###   ########.fr        #
+#    Updated: 2025/12/20 15:09:22 by gomar            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,8 @@ SRCS = main.c \
        parsing_utils.c \
        utils.c \
        sort.c \
-       sort_small.c
+       sort_small.c \
+       sort_utils.c
 
 CHECKER_SRCS = checker_bonus.c \
                stack_init.c \

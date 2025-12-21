@@ -6,7 +6,7 @@
 /*   By: gomar <gomar@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/13 00:00:00 by gomar             #+#    #+#             */
-/*   Updated: 2025/12/13 00:00:00 by gomar            ###   ########.fr       */
+/*   Updated: 2025/12/21 15:16:17 by gomar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	add_number_to_stack(t_stack *a, char *str)
 
 	if (!is_valid_number(str))
 		return (0);
-	num = ft_atoi(str);
+	num = ft_atol(str);
 	if (num > 2147483647 || num < -2147483648)
 		return (0);
 	if (has_duplicates(a, (int)num))

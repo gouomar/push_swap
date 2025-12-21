@@ -1,8 +1,12 @@
-.vscode
+.vscode/
 
-#tester
+# Compiled files
+*.o
+*.a
+
+# Tester
 push_swap_tester/
 
-#exucutable
+# Executables
 checker
 push_swap

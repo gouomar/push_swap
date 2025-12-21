@@ -6,12 +6,11 @@
 /*   By: gomar <gomar@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/13 00:00:00 by gomar             #+#    #+#             */
-/*   Updated: 2025/12/15 09:43:05 by gomar            ###   ########.fr       */
+/*   Updated: 2025/12/20 15:09:22 by gomar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-
 
 void	sort_two(t_stack *a)
 {
@@ -39,7 +38,6 @@ void	sort_three(t_stack *a)
 	if (a->top->value > a->top->next->value)
 		sa(a, 1);
 }
-
 
 static int	get_min_index_position(t_stack *stack)
 {
